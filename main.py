@@ -12,7 +12,11 @@ import io
 
 def demonstration():
     ichan = Building("Carl Ichan", "Ichan", 15.4277)
-    lab003 = Lab("Lab 114", 5.46, 5.525213, 5.39672, -0.064247, "12,256", "586,292", "0.607", "3", ichan)
+    months = {
+        "May": 5.39672,
+        "Jun": 4.39672,
+    }
+    lab003 = Lab("Lab 114", 3.46, 5.525213, months, -0.064247, "12,256", "586,292", "0.607", "3", ichan)
     ichan.add_lab(lab003)
     return ichan
 
@@ -66,7 +70,12 @@ homes.text_frame.text = ichan_demo.labs[0].homes
 homes.text_frame.fit_text(font_family='dates', font_file='Poppins-Regular.ttf', max_size=20, bold=True)
 homes.text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
-data = {"Ichan\nAverage": ichan_demo.average, "Baseline\nAverage": ichan_demo.labs[0].baseline_avg, "Your\nLab": ichan_demo.labs[0].week_avg}
+best_lab = test.shapes.add_textbox(Inches(5.63), Inches(7.4), Inches(3), Inches(3))
+best_lab.text_frame.text = "Lab 003"
+best_lab.text_frame.fit_text(font_family='lab', font_file='Poppins-Regular.ttf', max_size=20, bold=True)
+best_lab.text_frame.paragraphs[0].font.color.rgb = RGBColor(0xF0, 0x7C, 0x34)
+
+data = {f"{ichan_demo.shorthand}\nAverage": ichan_demo.average, "Baseline\nAverage": ichan_demo.labs[0].baseline_avg, "Your\nLab": ichan_demo.labs[0].week_avg}
 labs = list(data.keys())
 values = list(data.values())
 plt.figure(figsize=(15, 5))
@@ -79,9 +88,32 @@ plt.xticks([])
 for i in range(3):
     plt.text(values[i], i, f"{values[i]: .2f} MTCO2", size=30)
 plt.yticks(size=20, fontweight='bold')
-plt.title("ENERGY USAGE THIS WEEK", size=40, fontweight='bold')
+plt.title("ENERGY USAGE THIS WEEK", size=30, fontweight='bold')
 image_stream = io.BytesIO()
 plt.savefig(image_stream)
-plt.show()
 test.shapes.add_picture(image_stream, Inches(0.3), Inches(4.6), Inches(6), Inches(2))
+
+data = ichan_demo.labs[0].months_avg
+names = list(data.keys())
+values = list(data.values())
+plt.figure(figsize=(10, 5))
+plt.plot(names, values, color="orange")
+baseline = {}
+for month in names:
+    baseline[month] = ichan_demo.labs[0].baseline_avg
+names = list(baseline.keys())
+values = list(baseline.values())
+plt.plot(names, values, color="grey")
+for spine in plt.gca().spines.values():
+    spine.set_visible(False)
+plt.ylim([0, 10])
+plt.legend(['Current', "Baseline"], fontsize='x-large')
+plt.ylabel("MTons CO2", size=20)
+plt.xticks(size=20)
+plt.yticks(size=15)
+plt.title("CURRENT VS. BASELINE ENERGY USAGE", size=20, fontweight='bold', pad=20)
+image_stream = io.BytesIO()
+plt.savefig(image_stream)
+test.shapes.add_picture(image_stream, Inches(0.3), Inches(6.8), Inches(5.13), Inches(2.58))
+
 prs.save("output.pptx")
