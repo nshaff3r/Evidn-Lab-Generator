@@ -4,32 +4,11 @@ from pptx.util import Inches, Pt
 from pptx.chart.data import CategoryChartData
 from pptx.enum.chart import XL_CHART_TYPE
 from pptx.enum.shapes import MSO_SHAPE_TYPE
-
-
-class Lab:
-    def __init__(self, name, baseline_avg, week_avg, month_avg, energy_saved, miles, phones, homes, alerts, building):
-        self.name = name
-        self.baseline_avg = baseline_avg
-        self.week_avg = week_avg
-        self.month_avg = month_avg
-        self.energy_saved = energy_saved
-        self.miles = miles
-        self.phones = phones
-        self.homes = homes
-        self.alerts = alerts
-        self.building = building
-
-
-class Building:
-    def __init__(self, name, shorthand, average):
-        self.name = name
-        self.shorthand = shorthand
-        self.average = average
-        self.labs = []
-
-    def add_lab(self, lab):
-        self.labs.append(lab)
-
+from pptx.enum.chart import XL_LABEL_POSITION
+from pptx.enum.chart import XL_TICK_MARK
+from constructor import Lab, Building
+import matplotlib.pyplot as plt
+import io
 
 def demonstration():
     ichan = Building("Carl Ichan", "Ichan", 15.4277)
@@ -64,9 +43,9 @@ dates.text_frame.text = "May 22–May 28, 2023"
 dates.text_frame.fit_text(font_family='dates', font_file='Poppins-Regular.ttf', max_size=11, bold=False)
 
 # Fixes font issue
-test.shapes[4].text_frame.text = "Your increase in energy usage this week equates to:*"
-test.shapes[4].text_frame.fit_text(font_family='dates', font_file='Poppins-Regular.ttf', max_size=15, bold=True)
-test.shapes[4].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+test.shapes[2].text_frame.text = "Your increase in energy usage this week equates to:*"
+test.shapes[2].text_frame.fit_text(font_family='dates', font_file='Poppins-Regular.ttf', max_size=15, bold=True)
+test.shapes[2].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
 alerts = test.shapes.add_textbox(Inches(6.01), Inches(1), Inches(4), Inches(4))
 alerts.text_frame.text = ichan_demo.labs[0].alerts
@@ -87,11 +66,22 @@ homes.text_frame.text = ichan_demo.labs[0].homes
 homes.text_frame.fit_text(font_family='dates', font_file='Poppins-Regular.ttf', max_size=20, bold=True)
 homes.text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
-chart_data = CategoryChartData()
-# This will be different for lab 210
-chart_data.categories = [f"{ichan_demo.shorthand} Average", "Baseline Average", "Your Lab"]
-chart_data.add_series('Series 1', ( ichan_demo.labs[0].week_avg, ichan_demo.labs[0].baseline_avg, ichan_demo.average))
-x, y, cx, cy = Inches(0.7), Inches(5.15), Inches(5), Inches(1.5)
-test.shapes.add_chart(XL_CHART_TYPE.BAR_CLUSTERED, x, y, cx, cy, chart_data)
-
+data = {"Ichan\nAverage": ichan_demo.average, "Baseline\nAverage": ichan_demo.labs[0].baseline_avg, "Your\nLab": ichan_demo.labs[0].week_avg}
+labs = list(data.keys())
+values = list(data.values())
+plt.figure(figsize=(15, 5))
+bar_colors = ["orange", "grey", "pink"]
+plt.barh(labs, values, color=bar_colors)
+plt.margins(.3)
+for spine in plt.gca().spines.values():
+    spine.set_visible(False)
+plt.xticks([])
+for i in range(3):
+    plt.text(values[i], i, f"{values[i]: .2f} MTCO2", size=30)
+plt.yticks(size=20, fontweight='bold')
+plt.title("ENERGY USAGE THIS WEEK", size=40, fontweight='bold')
+image_stream = io.BytesIO()
+plt.savefig(image_stream)
+plt.show()
+test.shapes.add_picture(image_stream, Inches(0.3), Inches(4.6), Inches(6), Inches(2))
 prs.save("output.pptx")
