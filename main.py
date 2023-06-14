@@ -12,16 +12,16 @@ def demonstration():
         "May": 5.39672,
         "Jun": 4.39672,
     }
-    lab003 = Lab("Lab 003", 3.46, 5.525213, months, -0.064247, "12,256", "586,292", "0.607", "3", ichan)
     months2 = {
         "May": 5.39672,
         "Jun": 6.392,
     }
-    lab004 = Lab("Lab 004", 6.46, 4.525, months2, -0.064247, "12,256", "586,292", "0.507", "3", ichan)
     months3 = {
-        "May": 6.2672,
+        "May": 10.2672,
         "Jun": 1.23672,
     }
+    lab003 = Lab("Lab 003", 3.46, 5.525213, months, -0.064247, "15,256", "586,292", "0.607", "3", ichan)
+    lab004 = Lab("Lab 004", 6.46, 4.525, months2, -0.064247, "12,256", "586,292", "0.507", "3", ichan)
     lab114 = Lab("Lab 114", 2.44, 8.21, months3, -0.322247, "10,256", "466,292", "1.607", "2", ichan)
     ichan.add_lab(lab003)
     ichan.add_lab(lab004)
@@ -91,8 +91,8 @@ for i, slide in enumerate(prs.slides):
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
     plt.xticks([])
-    for i in range(3):
-        plt.text(values[i], i, f"{values[i]: .2f} MTCO2", size=30)
+    for j in range(3):
+        plt.text(values[j], i, f"{values[j]: .2f} MTCO2", size=30)
     plt.yticks(size=20, fontweight='bold')
     plt.title("ENERGY USAGE THIS WEEK", size=35, fontweight='bold')
     image_stream = io.BytesIO()
