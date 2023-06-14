@@ -3,6 +3,7 @@
 To run, make sure python-pptx and matplotlib are installed. This can be done with the commands
 
 ```pip install python-pptx```
+
 ```pip install matplotlib```
 
 ## Steps for running
