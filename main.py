@@ -1,3 +1,5 @@
+import collections
+import collections.abc
 from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.util import Inches, Pt
@@ -121,4 +123,5 @@ for i, slide in enumerate(prs.slides):
     plt.savefig(image_stream)
     slide.shapes.add_picture(image_stream, Inches(0.3), Inches(6.8), Inches(5.13), Inches(2.58))
 
+print("Finished! Generated output.pptx.")
 prs.save("output.pptx")
