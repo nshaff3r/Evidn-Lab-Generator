@@ -1,8 +1,9 @@
 # Evidn-Lab-Generator
 
-To run, make sure python-pptx is installed. This can be done with the command
+To run, make sure python-pptx and matplotlib are installed. This can be done with the commands
 
 ```pip install python-pptx```
+```pip install matplotlib```
 
 ## Steps for running
 
