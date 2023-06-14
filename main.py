@@ -43,7 +43,7 @@ subtitle.text_frame.fit_text(font_family='subtitle', font_file='Poppins-Regular.
 
 # Writes week dates
 dates = test.shapes.add_textbox(Inches(0.44), Inches(1.31), Inches(4), Inches(4))
-dates.text_frame.text = "May 22–May 28, 2023"
+dates.text_frame.text = input("Date (in format: May 22–May 28, 2023): ")
 dates.text_frame.fit_text(font_family='dates', font_file='Poppins-Regular.ttf', max_size=11, bold=False)
 
 # Fixes font issue
@@ -71,7 +71,7 @@ homes.text_frame.fit_text(font_family='dates', font_file='Poppins-Regular.ttf', 
 homes.text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
 best_lab = test.shapes.add_textbox(Inches(5.63), Inches(7.4), Inches(3), Inches(3))
-best_lab.text_frame.text = "Lab 003"
+best_lab.text_frame.text = input("Lab of the week: ")
 best_lab.text_frame.fit_text(font_family='lab', font_file='Poppins-Regular.ttf', max_size=20, bold=True)
 best_lab.text_frame.paragraphs[0].font.color.rgb = RGBColor(0xF0, 0x7C, 0x34)
 
@@ -88,7 +88,7 @@ plt.xticks([])
 for i in range(3):
     plt.text(values[i], i, f"{values[i]: .2f} MTCO2", size=30)
 plt.yticks(size=20, fontweight='bold')
-plt.title("ENERGY USAGE THIS WEEK", size=30, fontweight='bold')
+plt.title("ENERGY USAGE THIS WEEK", size=35, fontweight='bold')
 image_stream = io.BytesIO()
 plt.savefig(image_stream)
 test.shapes.add_picture(image_stream, Inches(0.3), Inches(4.6), Inches(6), Inches(2))
@@ -111,7 +111,7 @@ plt.legend(['Current', "Baseline"], fontsize='x-large')
 plt.ylabel("MTons CO2", size=20)
 plt.xticks(size=20)
 plt.yticks(size=15)
-plt.title("CURRENT VS. BASELINE ENERGY USAGE", size=20, fontweight='bold', pad=20)
+plt.title("CURRENT VS. BASELINE ENERGY USAGE", size=27, fontweight='bold', pad=20)
 image_stream = io.BytesIO()
 plt.savefig(image_stream)
 test.shapes.add_picture(image_stream, Inches(0.3), Inches(6.8), Inches(5.13), Inches(2.58))
