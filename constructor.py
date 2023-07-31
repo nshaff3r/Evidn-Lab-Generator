@@ -13,11 +13,12 @@ class Lab:
 
 
 class Building:
-    def __init__(self, name, shorthand, average):
+    def __init__(self, name, shorthand, average, week):
         self.name = name
         self.shorthand = shorthand
         self.average = average
         self.labs = []
+        self.week = week
 
     def add_lab(self, lab):
         self.labs.append(lab)
