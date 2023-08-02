@@ -4,9 +4,7 @@ This script automates the creation of lab reports for Princeton's the Power is O
 
 ## Steps for installing
 
-1. Clone this repository to your machine. This can be done with the command
-
-    ```git clone https://github.com/nshaff3r/Evidn-Lab-Generator.git``` 
+1. Clone this repository to your machine. This can be done with the command ```git clone https://github.com/nshaff3r/Evidn-Lab-Generator.git``` 
 
 If you do not have git installed on your computer, 
 - Open template.pptx and duplicate the slides for the amount of labs
