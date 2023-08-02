@@ -1,6 +1,6 @@
 # Evidn-Lab-Generator
 
-This script automates the creation of lab reports for Princeton's the Power is Ours campign. If there are any bugs, please add an issue and describe the problem.
+This script automates the creation of lab reports for Princeton's The Power is Ours campign. If there are any bugs, please add an issue and describe the problem.
 
 ## Steps for installing
 
