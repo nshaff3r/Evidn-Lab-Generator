@@ -1,13 +1,14 @@
 # Evidn-Lab-Generator
 
-To run, make sure python-pptx and matplotlib are installed. This can be done with the commands
+This script automates the creation of lab reports for Princeton's the Power is Ours campign. If there are any bugs, please add an issue and describe the problem.
 
-```pip install python-pptx```
+## Steps for installing
 
-```pip install matplotlib```
+1. Clone this repository to your machine. This can be done with the command
 
-## Steps for running
+    ```git clone https://github.com/nshaff3r/Evidn-Lab-Generator.git``` 
 
+If you do not have git installed on your computer, 
 - Open template.pptx and duplicate the slides for the amount of labs
     - For example, if you wanted to make 4 lab reports, there should be 4 slides
 - Run the program (currently only in demo mode) with the command
