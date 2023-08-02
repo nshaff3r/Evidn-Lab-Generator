@@ -6,7 +6,6 @@ from pptx.util import Inches, Pt
 from constructor import Lab, Building
 from setup import add_labs
 from sys import exit
-from demo import demonstration
 import matplotlib.pyplot as plt
 import io
 
@@ -24,7 +23,7 @@ if len(prs.slides) != len(building.labs):
     exit("Your template presentation contains a different number of slides than labs.\n"
          "Please fix the template presentation to have the same number of slides as labs.")
 
-timeperiod = input("Date (ex. May 22–May 28, 2023): ")
+timeperiod = input("Enter how you want the date to appear (ex. May 20–May 26, 2023): ")
 labofweek = input("Lab of the week (ex. Lab 007): ")
 for i, slide in enumerate(prs.slides):
     # Creates lab name
@@ -100,12 +99,12 @@ for i, slide in enumerate(prs.slides):
     plt.plot(names, values, color="grey")
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
-    plt.ylim([0, 10])
     plt.legend(['Current', "Baseline"], fontsize='x-large')
     plt.ylabel("MTons CO2", size=20)
     plt.xticks(size=20)
     plt.yticks(size=15)
     plt.title("CURRENT VS. BASELINE ENERGY USAGE", size=27, fontweight='bold', pad=20)
+    plt.show()
     image_stream = io.BytesIO()
     plt.savefig(image_stream)
     slide.shapes.add_picture(image_stream, Inches(0.3), Inches(6.8), Inches(5.13), Inches(2.58))

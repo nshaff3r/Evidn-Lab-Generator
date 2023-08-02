@@ -91,7 +91,7 @@ def building_average(lab_list, name):
     
     end_year = int(input('Enter the end year (e.g. 2023): '))
     end_month = int(input('Enter the end month (a number e.g. May = 5): '))
-    end_day = int(input('Enter the end day (e.g. 20): '))
+    end_day = int(input('Enter the end day (e.g. 26): '))
     end_date = datetime(end_year, end_month, end_day)
     
     building_name = name
