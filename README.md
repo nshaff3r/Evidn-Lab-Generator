@@ -22,5 +22,5 @@ This script automates the creation of lab reports for Princeton's The Power is O
     - For example, if you wanted to make 4 lab reports, there should be 4 slides.
 3. Run the program with the command
 
-    ```python labs.py```
+    ```python main.py```
 4. Upon completion, the output file will appear, named "output.pptx"
