@@ -4,15 +4,16 @@ from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.util import Inches, Pt
 from constructor import Lab, Building
-from demo import demonstration
+from setup import add_labs
 from sys import exit
 import matplotlib.pyplot as plt
 import io
 
 
 prs = Presentation('template.pptx')
-building = demonstration()
-
+building = add_labs()
+if building is None:
+    exit()
 if len(prs.slides) != len(building.labs):
     exit("Your template presentation contains a different number of slides than labs.\n"
          "Please fix the template presentation to have the same number of slides as labs.")
@@ -39,21 +40,21 @@ for i, slide in enumerate(prs.slides):
     slide.shapes[2].text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
     alerts = slide.shapes.add_textbox(Inches(6.01), Inches(1), Inches(4), Inches(4))
-    alerts.text_frame.text = building.labs[i].alerts
+    alerts.text_frame.text = str(building.labs[i].alerts)
     alerts.text_frame.fit_text(font_family='dates', font_file='Poppins-Regular.ttf', max_size=28, bold=True)
 
     miles = slide.shapes.add_textbox(Inches(0.84), Inches(3.17), Inches(7), Inches(7))
-    miles.text_frame.text = building.labs[i].miles
+    miles.text_frame.text = str(building.labs[i].miles)
     miles.text_frame.fit_text(font_family='dates', font_file='Poppins-Regular.ttf', max_size=20, bold=True)
     miles.text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
     phones = slide.shapes.add_textbox(Inches(2.88), Inches(3.17), Inches(7), Inches(7))
-    phones.text_frame.text = building.labs[i].phones
+    phones.text_frame.text = str(building.labs[i].phones)
     phones.text_frame.fit_text(font_family='dates', font_file='Poppins-Regular.ttf', max_size=20, bold=True)
     phones.text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
     homes = slide.shapes.add_textbox(Inches(5), Inches(3.17), Inches(7), Inches(7))
-    homes.text_frame.text = building.labs[i].homes
+    homes.text_frame.text = str(building.labs[i].homes)
     homes.text_frame.fit_text(font_family='dates', font_file='Poppins-Regular.ttf', max_size=20, bold=True)
     homes.text_frame.paragraphs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
