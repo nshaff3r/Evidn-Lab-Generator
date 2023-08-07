@@ -4,11 +4,10 @@ def lab_creator(lab_name, lab_file, start_date, end_date, building_name):
     from time import strftime
     from constructor import Lab, Building
     from datetime import date, timedelta, datetime
-       
-   
+    import calendar
+
     lab_name = lab_file.split(" ")[0][-4:]
     
-    #------------------------------------------------------------------------------------------
     #CLEANING DATA
     
     data = pd.read_csv(lab_file,skiprows=[0])
@@ -21,32 +20,36 @@ def lab_creator(lab_name, lab_file, start_date, end_date, building_name):
     
     date_format = "%m/%d/%Y"
     
-    #-------------------------------------------------------------------------------------------
+   
     #CALCULATING MONTH AVERAGE
-    
-    month_start_date = datetime(int(start_date.year), int(start_date.month), 1)
-   # print(month_start_date)
-  
-    month_sum = 0
-    month_count = 0
-    month_index_list = [] #list to host indices of all relevant dates (from month) in the spreadsheet
-    
-    for i in np.arange(0, data.shape[0]):
-        day = data["Date"][i]
-        #get the month in the current value of the column
-        day_split_list = day.split(' ')
-        month_date_obj = datetime.strptime(day_split_list[0],date_format)
-        if month_start_date <= month_date_obj <= end_date:
-            month_sum = month_sum + data['Value'][i]
-            month_count = month_count + 1
-            
-    month_average = month_sum/month_count
-    
-    #updating month_results_dict
+
     months_average = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 
                           7:0, 8:0, 9:0, 10:0, 11:0, 12:0}
-    month_update = {int(start_date.month) : month_average}
-    months_average.update(month_update)
+    
+    list_dates = np.arange(1, end_date.month + 1)
+       
+    for i in list_dates:
+        month_start_date = datetime(int(start_date.year), i, 1)
+        res = calendar.monthrange(start_date.year, i)[1]
+        month_end_date = datetime (int(start_date.year), i, res )
+        
+        month_sum = 0
+        month_count = 0
+   
+        for j in np.arange(0, data.shape[0]):
+            day = data["Date"][j]
+            #get the month in the current value of the column
+            day_split_list = day.split(' ')
+            month_date_obj = datetime.strptime(day_split_list[0],date_format)
+            if month_start_date <= month_date_obj <= end_date:
+                month_sum = month_sum + data['Value'][j]
+                month_count = month_count + 1
+
+        month_average = month_sum/month_count
+    
+        #updating month_results_dict
+        month_update = {i : month_average}
+        months_average.update(month_update)
     
     #----------------------------------------------------------------------------------------------
     #CALCULATING WEEK AVERAGE
@@ -98,8 +101,8 @@ def building_average(lab_list, name):
     
     lab_week_sum = 0
     lab_week_count = 0
-    lab_average = 0 #how do i actually set this
-    week = 0 #how do i actually set this
+    lab_average = 0 
+    week = 0 
     curr_building = Building(building_name, building_name, lab_average, week)
     
     response = "y"
@@ -110,22 +113,26 @@ def building_average(lab_list, name):
             ignored_labs.append(str(input("Type in the lab number like L221: ")))
         else:
             print("No more labs to add")
+    curr_building.ignored = ignored_labs
     
-    
+    lab_name_list = []
     for i in np.arange(0, len(lab_list)):
-        #lab_file = lab_list
-        #when I have more than one lab file
         lab_file = lab_list[i]
-        print(lab_file)
-        lab_name = lab_file.split(" ")[0][-4:]
-        lab = lab_creator(lab_name, lab_file, start_date, end_date, building_name)
-        if lab_name not in ignored_labs:
-            lab_week_sum = lab.week_avg + lab_week_sum
-            lab_week_count += 1
-        
-        curr_building.add_lab(lab)
-
-    curr_building.lab_average = lab_week_sum/lab_week_count
+        lab_name = lab_file.split(" ")[0]
+        lab_name_list.append(lab_name)
+    
+    for i in np.arange(0,len(lab_name_list)):
+        lab_file = lab_list[i]
+        lab_sample = lab_creator(lab_name_list[i], lab_file, start_date, end_date, building_name)
+        if lab_name_list[i] in ignored_labs:
+            print("Ignoring lab" + lab_name_list[i])
+        else:
+            lab_week_sum = lab_sample.week_avg + lab_week_sum
+            lab_week_count = lab_week_count + 1
+                  
+        curr_building.add_lab(lab_sample)
+    
+    curr_building.average = lab_week_sum/lab_week_count
     return curr_building
 
 def add_labs():
@@ -139,10 +146,11 @@ def add_labs():
               f"Check the spelling, and make sure it's at {os.getcwd()}/\n  ")
     else:
         for filename in os.listdir(directory):
-            f = os.path.join(directory, filename)
-            # checking if it is a file
-            if os.path.isfile(f):
-                lab_list.append(f)
+            if filename.endswith('.csv'):
+                f = os.path.join(directory, filename)
+                # checking if it is a file
+                if os.path.isfile(f):
+                    lab_list.append(f)
 
     if len(lab_list) > 0:
         print("Your current lab files are: ")
