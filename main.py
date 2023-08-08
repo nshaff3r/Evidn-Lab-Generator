@@ -117,25 +117,23 @@ for i, slide in enumerate(prs.slides):
     slide.shapes.add_picture(image_stream, Inches(0.3), Inches(4.6), Inches(6), Inches(2))
 
     # Months graph
+    plt.figure(figsize=(10, 5))
     data = building.labs[i].months_avg
     names = list(data.keys())
-    # Data started in May
-    names = list(map(lambda x:  x + 4 if x <= 8 else x - 8, names))
-    names = list(map(lambda x: calendar.month_abbr[x], names))
-    values = list(data.values())
-    print(values)
-    values = list(map(lambda x: None if x == 0 else x, values))
-    print("asdf")
-    print(values)
-    values = values[4:] + [None, None, None, None]
-    plt.figure(figsize=(10, 5))
-    plt.plot(names, values, color="orange")
     baseline = {}
     for month in names:
         baseline[month] = building.labs[i].baseline_avg
-    names = list(baseline.keys())
-    values = list(baseline.values())
-    plt.plot(names, values, color="grey")
+    baselineValues = list(baseline.values())
+    # Data started in May
+    names = list(map(lambda x:  x + 4 if x <= 8 else x - 8, names))
+    names = list(map(lambda x: calendar.month_abbr[x], names))
+    plt.plot(names, baselineValues, color="grey")
+
+    # Changing data
+    values = list(data.values())
+    values = list(map(lambda x: None if x == 0 else x, values))
+    values = values[4:] + [None, None, None, None]
+    plt.plot(names, values, color="orange")
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
     plt.legend(['Current', "Baseline"], fontsize='x-large')
@@ -144,11 +142,11 @@ for i, slide in enumerate(prs.slides):
     plt.yticks(size=15)
     # Hide every other month
     ax = plt.gca()
+    ax.set_ylim(0, 2 * building.labs[i].baseline_avg)
     temp = ax.xaxis.get_ticklabels()
     temp = list(set(temp) - set(temp[::2]))
     for label in temp:
         label.set_visible(False)
-    ax.set_ylim(0, 2 * max(values))
     plt.title("CURRENT VS. BASELINE ENERGY USAGE", size=27, fontweight='bold', pad=20)
     image_stream = io.BytesIO()
     plt.savefig(image_stream)
