@@ -28,7 +28,7 @@ def lab_creator(lab_name, lab_file, start_date, end_date, building_name):
     
     list_dates = np.arange(1, end_date.month + 1)
        
-    for i in list_dates:
+    for i in  list_dates:
         month_start_date = datetime(int(start_date.year), i, 1)
         res = calendar.monthrange(start_date.year, i)[1]
         month_end_date = datetime (int(start_date.year), i, res )
@@ -107,30 +107,35 @@ def building_average(lab_list, name):
     
     response = "y"
     ignored_labs = []
+    ignored_labs_objects = []
     while response == "y":
         response = str(input("Do you have a lab that should not be included in the building average? Answer y/n: "))
         if response == "y":
             ignored_labs.append(str(input("Type in the lab number like L221: ")))
         else:
             print("No more labs to add")
-    curr_building.ignored = ignored_labs
     
     lab_name_list = []
+    
     for i in np.arange(0, len(lab_list)):
         lab_file = lab_list[i]
-        lab_name = lab_file.split(" ")[0]
+        lab_name = lab_file.split(" ")[0][-4:]
         lab_name_list.append(lab_name)
+    
     
     for i in np.arange(0,len(lab_name_list)):
         lab_file = lab_list[i]
         lab_sample = lab_creator(lab_name_list[i], lab_file, start_date, end_date, building_name)
         if lab_name_list[i] in ignored_labs:
             print("Ignoring lab" + lab_name_list[i])
+            ignored_labs_objects.append(lab_sample)
         else:
             lab_week_sum = lab_sample.week_avg + lab_week_sum
             lab_week_count = lab_week_count + 1
-                  
+
         curr_building.add_lab(lab_sample)
+            
+        curr_building.ignored = ignored_labs_objects
     
     curr_building.average = lab_week_sum/lab_week_count
     return curr_building
