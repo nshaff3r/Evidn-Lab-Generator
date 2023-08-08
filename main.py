@@ -99,12 +99,15 @@ for i, slide in enumerate(prs.slides):
 
     bar_colors = []
     data = {}
+    size = 0
     if building.labs[i] not in building.ignored:
         data = {f"{building.shorthand}\nAverage": building.average, "Baseline\nAverage": building.labs[i].baseline_avg, "Your\nLab": building.labs[i].week_avg}
         bar_colors = ["orange", "grey", "pink"]
+        size = 3
     else:
         data = {"Baseline\nAverage": building.labs[i].baseline_avg, "Your\nLab": building.labs[i].week_avg}
         bar_colors = ["grey", "pink"]
+        size = 2
     labs = list(data.keys())
     values = list(data.values())
     plt.figure(figsize=(15, 5))
@@ -113,7 +116,7 @@ for i, slide in enumerate(prs.slides):
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
     plt.xticks([])
-    for j in range(3):
+    for j in range(size):
         plt.text(values[j], j, f"{values[j]: .2f} MTCO2", size=30)
     plt.yticks(size=20, fontweight='bold')
 
@@ -142,13 +145,13 @@ for i, slide in enumerate(prs.slides):
     plt.plot(names, values, color="orange")
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
-    plt.legend(['Current', "Baseline"], fontsize='x-large')
+    plt.legend(['Baseline', "Current"], fontsize='x-large')
     plt.ylabel("MTons CO2", size=20)
     plt.xticks(size=20)
     plt.yticks(size=15)
     # Hide every other month
     ax = plt.gca()
-    ax.set_ylim(0, 2 * building.labs[i].baseline_avg)
+    ax.set_ylim(0.5 * building.labs[i].baseline_avg, 1.5 * building.labs[i].baseline_avg)
     temp = ax.xaxis.get_ticklabels()
     temp = list(set(temp) - set(temp[::2]))
     for label in temp:
