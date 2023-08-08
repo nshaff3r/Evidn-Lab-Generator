@@ -1,5 +1,8 @@
 import collections
 import collections.abc
+import matplotlib.pyplot as plt
+import io
+import calendar
 from pptx import Presentation
 from pptx.enum.text import PP_ALIGN
 from pptx.dml.color import RGBColor
@@ -7,9 +10,6 @@ from pptx.util import Inches, Pt
 from constructor import Lab, Building
 from setup import add_labs
 from sys import exit
-import matplotlib.pyplot as plt
-import io
-import calendar
 
 
 prs = Presentation('template.pptx')
