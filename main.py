@@ -97,11 +97,17 @@ for i, slide in enumerate(prs.slides):
     best_lab.text_frame.fit_text(font_family='lab', font_file='Poppins-Regular.ttf', max_size=20, bold=True)
     best_lab.text_frame.paragraphs[0].font.color.rgb = RGBColor(0xF0, 0x7C, 0x34)
 
-    data = {f"{building.shorthand}\nAverage": building.average, "Baseline\nAverage": building.labs[i].baseline_avg, "Your\nLab": building.labs[i].week_avg}
+    bar_colors = []
+    data = {}
+    if building.labs[i] not in building.ignored:
+        data = {f"{building.shorthand}\nAverage": building.average, "Baseline\nAverage": building.labs[i].baseline_avg, "Your\nLab": building.labs[i].week_avg}
+        bar_colors = ["orange", "grey", "pink"]
+    else:
+        data = {"Baseline\nAverage": building.labs[i].baseline_avg, "Your\nLab": building.labs[i].week_avg}
+        bar_colors = ["grey", "pink"]
     labs = list(data.keys())
     values = list(data.values())
     plt.figure(figsize=(15, 5))
-    bar_colors = ["orange", "grey", "pink"]
     plt.barh(labs, values, color=bar_colors)
     plt.margins(.3)
     for spine in plt.gca().spines.values():
@@ -115,7 +121,7 @@ for i, slide in enumerate(prs.slides):
     image_stream = io.BytesIO()
     plt.savefig(image_stream)
     slide.shapes.add_picture(image_stream, Inches(0.3), Inches(4.6), Inches(6), Inches(2))
-
+    
     # Months graph
     plt.figure(figsize=(10, 5))
     data = building.labs[i].months_avg
