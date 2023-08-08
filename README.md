@@ -1,16 +1,13 @@
-# Evidn-Lab-Generator
+# Evidn Lab Generator
 
-This script automates the creation of lab reports for Princeton's The Power is Ours campign. If there are any bugs, please add an issue and describe the problem.
+This script automates the creation of lab reports for Princeton's The Power is Ours campign.
 
 ## Steps for installing
 
 1. Download the files in this repository. This can be done by navigating to [releases](https://github.com/nshaff3r/Evidn-Lab-Generator/releases) and downloading the .zip file containing everything.
-2. Make sure that Python is installed. The latest version can be found [here](https://www.python.org/downloads/).
-3. Unpack the downloaded zip. 
-4. Using a terminal or CLI on your computer, navigate to the folder that was created by unpacking the zip 
-    - You can do this on Mac by right clicking on the folder name, going to the services tab, and clicking "New Terminal at Folder"
-    - You can do this on Windows by opening the folder, right clicking anywhere in the folder while holding the shift key, and clicking "Open PowerShell window here"
-    - If you're using Linux, you probably know how to do this already ;)
+2. Make sure that Python is installed. A great guide to install can be found [here](https://docs.python-guide.org/starting/installation/).
+3. Unpack the downloaded zip of Evidn Lab Generator. 
+4. Using a terminal or CLI on your computer (i.e Terminal on Mac, Powershell on Windows), navigate to the folder that was created by unpacking the zip. A guide for this can be found [here](https://medium.com/geekculture/basic-bash-commands-c54933183c89)
 5. Install the necessary packages from requirements.txt. This can be done using the command
     
     ```pip install -r requirements.txt```
