@@ -25,7 +25,15 @@ if len(prs.slides) != len(building.labs):
          "Please fix the template presentation to have the same number of slides as labs.")
 
 timeperiod = input("Enter how you want the date to appear (ex. May 20–May 26, 2023): ")
-labofweek = input("Lab of the week (ex. Lab 007): ")
+bestenergy = [0, ""]
+for lab in building.labs:
+    metric = lab.energy_saved/lab.baseline_avg
+    if metric > bestenergy[0]:
+        bestenergy[0] = metric
+        bestenergy[1] = f"{lab.name[0]}ab {lab.name[1:]}"
+        print(bestenergy)
+labofweek = bestenergy[1]
+
 for i, slide in enumerate(prs.slides):
     # Writes lab name
     building.labs[i].name = f"{building.labs[i].name[0]}ab {building.labs[i].name[1:]}"
