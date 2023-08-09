@@ -31,7 +31,6 @@ for lab in building.labs:
     if metric > bestenergy[0]:
         bestenergy[0] = metric
         bestenergy[1] = f"{lab.name[0]}ab {lab.name[1:]}"
-        print(bestenergy)
 labofweek = bestenergy[1]
 
 for i, slide in enumerate(prs.slides):
