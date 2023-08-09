@@ -3,6 +3,7 @@ import collections.abc
 import matplotlib.pyplot as plt
 import io
 import calendar
+import csv
 from pptx import Presentation
 from pptx.enum.text import PP_ALIGN
 from pptx.dml.color import RGBColor
@@ -32,6 +33,10 @@ for lab in building.labs:
         bestenergy[0] = metric
         bestenergy[1] = f"{lab.name[0]}ab {lab.name[1:]}"
 labofweek = bestenergy[1]
+
+# For output csv file
+fields = ["Lab", "Week Average", "Months Average", "Energy Saved", "Percent Saved"]
+rows = []
 
 for i, slide in enumerate(prs.slides):
     # Writes lab name
@@ -164,6 +169,13 @@ for i, slide in enumerate(prs.slides):
     image_stream = io.BytesIO()
     plt.savefig(image_stream)
     slide.shapes.add_picture(image_stream, Inches(0.3), Inches(6.8), Inches(5.13), Inches(2.58))
+    rows.append([building.labs[i].name, building.labs[i].week_avg, dict(zip(names, values)),
+                 building.labs[i].energy_saved,
+                 building.labs[i].energy_saved/building.labs[i].baseline_avg * 100])
 
-print("Finished! Generated output.pptx.")
 prs.save("output.pptx")
+with open("data.csv", "w") as csvfile:
+    csvwriter = csv.writer(csvfile)
+    csvwriter.writerow(fields) 
+    csvwriter.writerows(rows)
+print("Finished! Generated output.pptx and data.csv.")
