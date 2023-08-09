@@ -32,9 +32,6 @@ def lab_creator(lab_name, lab_file, start_date, end_date, building_name):
         month_start_date = datetime(int(start_date.year), i, 1)
         res = calendar.monthrange(start_date.year, i)[1]
         month_end_date = datetime (int(start_date.year), i, res )
-
-        print(month_start_date)
-        print(month_end_date)
         
         month_sum = 0
         month_count = 0
@@ -57,10 +54,6 @@ def lab_creator(lab_name, lab_file, start_date, end_date, building_name):
         #updating month_results_dict
             month_update = {i : month_average}
             months_average.update(month_update)
-        print("Month", i)
-       # print("Average", month_average)
-        print("Sum", month_sum)
-        print("count", month_count)
     
     #----------------------------------------------------------------------------------------------
     #CALCULATING WEEK AVERAGE
