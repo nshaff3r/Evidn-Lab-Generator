@@ -1,6 +1,6 @@
 # Princeton Lab Generator
 
-This program automates the creation of weekly energy lab reports for Princeton's The Power is Ours campaign, scraping input CSV files and creating a PowerPoint deliverable.
+This program automates the creation of weekly energy lab reports for Princeton's The Power is Ours campaign, scraping input CSV files and creating a PowerPoint deliverable. You can read more about Princeton's net zero efforts and lab fume hoods [here](https://www.princeton.edu/news/2021/12/15/making-switch-net-zero-mindset)
 
 ## Installing
 
