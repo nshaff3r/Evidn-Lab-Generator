@@ -54,10 +54,6 @@ def lab_creator(lab_name, lab_file, start_date, end_date, building_name):
         #updating month_results_dict
         month_update = {i : month_average}
         months_average.update(month_update)
-        print("Month", i)
-        print("Average", month_average)
-        print("Sum", month_sum)
-        print("count", month_count)
     
     #----------------------------------------------------------------------------------------------
     #CALCULATING WEEK AVERAGE
