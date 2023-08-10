@@ -7,6 +7,7 @@ def lab_creator(lab_name, lab_file, start_date, end_date, building_name):
     import calendar
 
     lab_name = lab_file.split(" ")[0][-4:]
+    lab_baselines = pd.read_csv("lab_baselines.csv")
     
     #CLEANING DATA
     
@@ -54,8 +55,7 @@ def lab_creator(lab_name, lab_file, start_date, end_date, building_name):
         #updating month_results_dict
             month_update = {i : month_average}
             months_average.update(month_update)
-    
-    #----------------------------------------------------------------------------------------------
+   
     #CALCULATING WEEK AVERAGE
 
     week_sum = 0
@@ -70,7 +70,14 @@ def lab_creator(lab_name, lab_file, start_date, end_date, building_name):
             week_count = week_count + 1
 
     week_average = week_sum/week_count
-    baseline_average = float(input("What is " + lab_name +" in " + building_name +"'s baseline average? "))
+    baseline_average = 0
+    for i in np.arange(0,lab_baselines.shape[0]):
+        if lab_name in str(lab_baselines['Lab']):
+            if str(lab_baselines['Lab'][i]) == lab_name:
+                baseline_average = lab_baselines['Baseline'][i]
+        else:
+            print(lab_name + " does not have a baseline average! Please check if the file lab_baselines.csv has a baseline inputted for this lab.")
+    
     energy_saved = baseline_average - week_average
     miles = abs(energy_saved/3.9E-4)
     phones = abs(energy_saved/8.22E-6)
