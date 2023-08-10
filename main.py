@@ -138,8 +138,8 @@ for i, slide in enumerate(prs.slides):
     for month in names:
         baseline[month] = building.labs[i].baseline_avg
     baselineValues = list(baseline.values())
-    # For when data starts in May
-    names = list(map(lambda x:  x + 4 if x <= 8 else x - 8, names))
+    # # For when data starts in May
+    # names = list(map(lambda x:  x + 4 if x <= 8 else x - 8, names))
 
     # Switches from month indexes to names
     names = list(map(lambda x: calendar.month_abbr[x], names))
@@ -148,8 +148,8 @@ for i, slide in enumerate(prs.slides):
     # Current data (instead of baseline)
     values = list(data.values())
     values = list(map(lambda x: None if x == 0 else x, values))
-    # For when data starts in May
-    values = values[4:] + [None, None, None, None]
+    # # For when data starts in May
+    # values = values[4:] + [None, None, None, None]
     plt.plot(names, values, color="orange")
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
