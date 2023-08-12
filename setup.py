@@ -1,4 +1,4 @@
-def lab_creator(lab_name, lab_file, start_date, end_date, building_name):
+def lab_creator(lab_name, lab_file, start_date, end_date, building_name, lab_baselines):
     import numpy as np
     import pandas as pd
     from time import strftime
@@ -7,11 +7,12 @@ def lab_creator(lab_name, lab_file, start_date, end_date, building_name):
     import calendar
 
     lab_name = lab_file.split(" ")[0][-4:]
-    lab_baselines = pd.read_csv("lab_baselines.csv")
+
     
     #CLEANING DATA
     
     data = pd.read_csv(lab_file,skiprows=[0])
+    lab_baselines = pd.read_csv(lab_baselines)
     #Drop NaN and 0 values
     data = data.dropna(subset=['Value'])
     data = data.loc[data["Value"]!=0]
@@ -89,7 +90,7 @@ def lab_creator(lab_name, lab_file, start_date, end_date, building_name):
     return lab
     
 
-def building_average(lab_list, name):
+def building_average(lab_list, name, lab_baselines):
     import numpy as np
     import pandas as pd
     from time import strftime
@@ -136,7 +137,7 @@ def building_average(lab_list, name):
     
     for i in np.arange(0,len(lab_name_list)):
         lab_file = lab_list[i]
-        lab_sample = lab_creator(lab_name_list[i], lab_file, start_date, end_date, building_name)
+        lab_sample = lab_creator(lab_name_list[i], lab_file, start_date, end_date, building_name, lab_baselines[0])
         if lab_name_list[i] in ignored_labs:
             print("Ignoring lab" + lab_name_list[i])
             ignored_labs_objects.append(lab_sample)
@@ -155,7 +156,9 @@ def building_average(lab_list, name):
 def add_labs():
     import numpy as np
     import os
+    import pandas as pd
     lab_list = []
+    lab_baselines = []
     currBuilding = str(input("What is the name of the building folder that contains your labs? "))
     directory = os.getcwd() + "/" + currBuilding
     if not os.path.exists(directory):
@@ -164,10 +167,16 @@ def add_labs():
     else:
         for filename in os.listdir(directory):
             if filename.endswith('.csv'):
-                f = os.path.join(directory, filename)
-                # checking if it is a file
-                if os.path.isfile(f):
-                    lab_list.append(f)
+                if not(filename.startswith("lab_baselines")):
+                    f = os.path.join(directory, filename)
+                    # checking if it is a file
+                    if os.path.isfile(f):
+                        lab_list.append(f)
+                elif filename.startswith("lab_baselines"):
+                    f = os.path.join(directory, filename)
+                    if os.path.isfile(f):
+                        lab_baselines.append(f)
+        
 
     if len(lab_list) > 0:
         print("Your current lab files are: ")
@@ -175,9 +184,10 @@ def add_labs():
             print(lab_list[i])
     
     #bool(lab_list) = True (not empty)
-    if bool(lab_list):
-        curr_building = building_average(lab_list, currBuilding)
+    if bool(lab_list) and bool(lab_baselines):
+        curr_building = building_average(lab_list, currBuilding, lab_baselines)
         return curr_building
     else:
         print("You have no labs to process!")
         return
+
